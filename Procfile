@@ -1,1 +1,1 @@
-web: gunicorn app --workers 16
+web: gunicorn app:create_app --workers 16
