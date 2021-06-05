@@ -20,7 +20,7 @@ def profile():
 @login_required
 def restaurants():
     restaurants = Restaurant.query.all()
-    return render_template('restaurants.html', name=current_user.name, restaurants=restaurants)
+    return render_template('restaurants.html', restaurants=restaurants)
 
 @main.route('/new_restaurants')
 @login_required
