@@ -18,7 +18,21 @@ class Restaurant(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(1000))
     owner=db.Column(db.Integer, db.ForeignKey('user.id'))
-    #menu = db.Column(db.ARRAY(db.JSON))
+    phone=db.Column(db.String())
+    address= db.Column(db.String())
+    menu = db.Column(db.Integer, db.ForeignKey('menu.id'))
+
+class Menu(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(1000))
+    description = db.Column(db.String(1000))
+
+class MenuItem(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(1000))
+    description = db.Column(db.String(1000))
+    menu = db.Column(db.Integer, db.ForeignKey('menu.id'))
+    price = db.Column(db.Integer)
 
 class Order(db.Model):
     STATES = [
@@ -29,5 +43,4 @@ class Order(db.Model):
     state = db.Column(ChoiceType(STATES))
     user=db.Column(db.Integer, db.ForeignKey('user.id'))
     restaurant = db.Column(db.Integer, db.ForeignKey('restaurant.id'))
-    #items = db.Column(db.ARRAY(db.JSON),server_default="{}")
     totalAmount = db.Column(db.Integer)

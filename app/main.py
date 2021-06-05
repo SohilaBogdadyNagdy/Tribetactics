@@ -1,8 +1,8 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, redirect, url_for, request, flash
 from flask_login import login_required, current_user
 
 from . import db
-from .models import User, Restaurant
+from .models import User, Restaurant, Menu
 
 main = Blueprint('main', __name__)
 
@@ -22,11 +22,20 @@ def restaurants():
     restaurants = Restaurant.query.all()
     return render_template('restaurants.html', name=current_user.name, restaurants=restaurants)
 
+@main.route('/new_restaurants')
+@login_required
+def new_restaurants():
+    return render_template('new-restaurant.html')
+
 
 @main.route('/restaurants', methods=['POST'])
 @login_required
 def restaurants_post():
     name = request.form.get('name')
+    phone = request.form.get('phone')
+    address = request.form.get('address')
+    menuName= request.form.get('menuName')
+    menuDescription= request.form.get('menuDescription')
 
     exist = Restaurant.query.filter_by(name=name).first()
 
@@ -34,9 +43,12 @@ def restaurants_post():
         flash('Restaurant Name already exists')
         return redirect(url_for('main.restaurants'))
 
-    new_restaurant = Restaurant(name=name, owner=current_user)
-
+    new_menu = Menu(name=menuName, description=menuDescription)
+    db.session.add(new_menu)
+    db.session.commit()
+    
+    new_restaurant = Restaurant(name=name, owner=current_user.id, phone=phone, address=address, menu=new_menu.id)
     db.session.add(new_restaurant)
     db.session.commit()
 
-    return redirect(url_for('main.profile'))
+    return redirect(url_for('main.restaurants'))
