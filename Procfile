@@ -1,1 +1,1 @@
-web: gunicorn wsgi:app --workers 16
+gunicorn "app:create_app()" --log-file
