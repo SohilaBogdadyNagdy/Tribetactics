@@ -1,2 +1,1 @@
-heroku config:set FLASK_APP=app
-web: gunicorn wsgi
+web: gunicorn wsgi:app --preload -b 0.0.0.0:5000 
