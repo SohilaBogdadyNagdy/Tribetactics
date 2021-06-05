@@ -1,1 +1,1 @@
-web: gunicorn Tribetactics:app --workers 16
+web: gunicorn app --workers 16
