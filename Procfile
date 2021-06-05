@@ -1,1 +1,1 @@
-web: gunicorn run
+web: gunicorn __init__
