@@ -1,21 +1,36 @@
 {% extends "base.html" %}
-
+<style>
+  table, th, th {
+    border: 1px solid black;
+    border: 1px solid black;
+  }
+  
+  table {
+    width: 100%;
+  }
+  </style>
 {% block content %}
 <h1 class="title">
-  Restaurants Data: 
+  <table style="width:100%">
+    <tr>
+      <th>Name</th>
+      <th>Address</th>
+      <th>Phone</th>
+      <th>Menu</th>
+      <th>Menu Items</th>
+    </tr>
+  
   {% for restaurant in restaurants %}
   <tr>
-    <br>
-    <td>{{restaurant.name}}</td>
-    <td>{{ restaurant.description }}</td>
-    <td>{{ restaurant.address }}</td>
-    <td>{{ restaurant.phone }}</td>
-    <td>{{ restaurant.menu }}</td>
-    <td>{{ restaurant.menu.name }}</td>
-    <td>{{ restaurant.menu.item }}</td>
-  
+    <th>{{restaurant.name}}</th>
+    <th>{{ restaurant.address }}</th>
+    <th>{{ restaurant.phone }}</th>
+    <th>{{ restaurant.menu }}</th>
+    <th>{{ restaurant.menu.menu_item }}</th>
   </tr>
+
 {% endfor %}
+</table>
 
 </h1>
 {% endblock %}
