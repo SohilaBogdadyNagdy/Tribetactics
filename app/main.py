@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, redirect, url_for, request, flash
 from flask_login import login_required, current_user
 
 from . import db
-from .models import User, Restaurant, Menu
+from .models import User, Restaurant, Menu, MenuItem
 
 main = Blueprint('main', __name__)
 
@@ -48,6 +48,14 @@ def restaurants_post():
     db.session.commit()
     
     new_restaurant = Restaurant(name=name, owner=current_user.id, phone=phone, address=address, menu=new_menu.id)
+    db.session.add(new_restaurant)
+    db.session.commit()
+
+    menuItemName= request.form.get('menuItemName')
+    menuItemDescription= request.form.get('menuItemDescription')
+    menuItemPrice = request.form.get('meuItemPrice')
+
+    new_menu_item = MenuItem(name=menuItemName, description=menuItemDescription, price=menuItemPrice, menu=new_menu.id)
     db.session.add(new_restaurant)
     db.session.commit()
 
