@@ -1,2 +1,2 @@
 heroku config:set FLASK_APP=app
-web: gunicorn flask run
+web: gunicorn wsgi:app
