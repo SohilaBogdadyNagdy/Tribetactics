@@ -27,6 +27,18 @@
                                     Profile
                                 </a>
                                 {% endif %}
+                                {% if current_user.is_authenticated %}
+                                <a href="{{ url_for('main.restaurants') }}" class="navbar-item">
+                                    Restaurants
+                                </a>
+                                {% endif %}
+
+                                {% if current_user.is_authenticated %}
+                                <a href="{{ url_for('main.restaurants_post') }}" class="navbar-item">
+                                    New Restaurant
+                                </a>
+                                {% endif %}
+
                                 {% if not current_user.is_authenticated %}
                                 <a href="{{ url_for('auth.login') }}" class="navbar-item">
                                     Login
