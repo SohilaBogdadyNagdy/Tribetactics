@@ -12,8 +12,8 @@ def index():
     return render_template('index.html')
 
 @main.route('/error')
-def error(message):
-    return render_template('error.html', message=message)
+def error():
+    return render_template('error.html')
 
 @main.route('/profile')
 @login_required
@@ -37,7 +37,7 @@ def new_restaurants():
 def restaurants_post():
     if(current_user.type != 'restaurant'):
         flash('Not Allowed to create new restaurant')
-        return redirect(url_for('main.error'), code=403, Response=Response('Forbidden'))
+        return redirect(url_for('main.error'))
 
     name = request.form.get('name')
     phone = request.form.get('phone')
@@ -49,7 +49,7 @@ def restaurants_post():
 
     if exist: 
         flash('Restaurant Name already exists')
-        return redirect(url_for('main.restaurants'), code=400, Response=Response('Bad Request'))
+        return redirect(url_for('main.restaurants'))
 
     new_menu = Menu(name=menuName, description=menuDescription)
     db.session.add(new_menu)
@@ -67,4 +67,4 @@ def restaurants_post():
     db.session.add(new_restaurant)
     db.session.commit()
 
-    return redirect(url_for('main.restaurants'),code=201, Response=Response())
+    return redirect(url_for('main.restaurants'))
