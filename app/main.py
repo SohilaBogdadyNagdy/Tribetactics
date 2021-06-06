@@ -1,3 +1,4 @@
+import json
 from flask import Blueprint, render_template, redirect, url_for, request, flash
 from flask.wrappers import Response
 from flask_login import login_required, current_user
@@ -79,8 +80,14 @@ def restaurants_post():
 @main.route('/restaurants/<id>')
 @login_required
 def get(id):
-    restaurant = Restaurant.query.filter_by(id=id)
-    return restaurant
+    restaurant = Restaurant.query.filter_by(id=id).first()
+    menu_items = MenuItem.query.filter_by(menu=restaurant.menu).all()
+    return {
+        'restaurantName': restaurant.name,
+        'restaurantAddress': restaurant.address,
+        'menu': restaurant.menu,
+        #'menuItems': json.dumps(menu_items),
+    }
 
 
 @main.route('/orders')
