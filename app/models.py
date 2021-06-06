@@ -42,7 +42,13 @@ class Order(db.Model):
         (u'DELIVERED', u'Delivered'),
     ]
     id = db.Column(db.Integer, primary_key=True)
-    state = db.Column(types.choice.ChoiceType(STATES))
+    state = db.Column(db.String(), default='Pending')
     user=db.Column(db.Integer, db.ForeignKey('user.id'))
     restaurant = db.Column(db.Integer, db.ForeignKey('restaurant.id'))
     totalAmount = db.Column(db.Integer)
+
+class OrderItem(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    order = db.Column(db.Integer, db.ForeignKey('restaurant.id'))
+    item =  db.Column(db.Integer, db.ForeignKey('menu_item.id'))
+    quantity = db.Column(db.Integer)

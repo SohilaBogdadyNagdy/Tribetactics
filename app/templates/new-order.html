@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript">
+    function getRestaurant() {
+        var id = document.getElementById("restaurants").value;
+        var xhttp = new XMLHttpRequest();
+        var url = 'https://restaurants-food-delivery-app.herokuapp.com/restaurants/' + id 
+        xhttp.open("GET", url);
+        var resp = xhttp.send();
+        var menuItems = resp || {};
+    }
+</script>
+
+<div class="column is-4 is-offset-4">
+   <h3 class="title" style="color:rgb(66, 158, 58)">Create New Order</h3>
+    <div class="box">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="notification is-danger">
+                    {{ messages[0] }}. Go to <a href="{{ url_for('main.order_post') }}">restaurant page</a>.
+                </div>
+            {% endif %}
+        {% endwith %}
+        <form method="POST" action="/orders">
+            <h5 class="title" style="color:rgb(66, 158, 58)">Please select a restaurant</h5>
+            <div class="field">
+                <div class="control">
+                    <select id="restaurants" name="restaurants" onchange="getRestaurant()">
+                        {% for restaurant in restaurants %}     
+                            <option class="control" value="{{ restaurant.id }}"> {{ restaurant.name }}</option>
+                        {% endfor %}
+                    </select>
+
+                </div>
+            </div>
+            <button class="button is-block is-info is-large is-fullwidth">Create Order</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

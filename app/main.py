@@ -3,7 +3,7 @@ from flask.wrappers import Response
 from flask_login import login_required, current_user
 
 from . import db
-from .models import User, Restaurant, Menu, MenuItem
+from .models import User, Restaurant, Menu, MenuItem, Order, OrderItem
 
 main = Blueprint('main', __name__)
 
@@ -14,6 +14,10 @@ def index():
 @main.route('/error')
 def error():
     return render_template('error.html')
+
+@main.route('/success')
+def success():
+    return render_template('success.html')
 
 @main.route('/profile')
 @login_required
@@ -26,7 +30,7 @@ def restaurants():
     if(current_user.type != 'restaurant'):
         restaurants = Restaurant.query.all()
     else:
-        restaurants = Restaurant.query.filter_by(owner=current_user._id)
+        restaurants = Restaurant.query.filter_by(owner=current_user.id)
     return render_template('restaurants.html', restaurants=restaurants)
 
 @main.route('/new_restaurants')
@@ -67,17 +71,37 @@ def restaurants_post():
     menuItemPrice = request.form.get('meuItemPrice')
 
     new_menu_item = MenuItem(name=menuItemName, description=menuItemDescription, price=menuItemPrice, menu=new_menu.id)
-    db.session.add(new_restaurant)
+    db.session.add(new_menu_item)
     db.session.commit()
 
     return redirect(url_for('main.restaurants'))
 
-
-@main.route('/order', methods=['POST'])
+@main.route('/restaurants/:id')
 @login_required
-def order_post():
+def get():
+    restaurant = Restaurant.query.filter_by(id=id)
+    return restaurant
+
+
+@main.route('/orders')
+@login_required
+def orders():
+    orders = Order.query.filter_by(user=current_user.id)
+    return render_template('orders.html', orders=orders)
+
+@main.route('/new_order')
+@login_required
+def new_order():
+    if(current_user.type != 'user'):
+        flash('Not allowed to create order')
+    restaurants = Restaurant.query.all()
+    return render_template('new-order.html', restaurants=restaurants)
+
+@main.route('/orders', methods=['POST'])
+@login_required
+def orders_post():
     if(current_user.type != 'user'):
         flash('Not Allowed to create new order')
         return redirect(url_for('main.error'))
-
-    return redirect(url_for('main.restaurants'))
+    print(request.form)
+    return redirect(url_for('main.success'))
