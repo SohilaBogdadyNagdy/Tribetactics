@@ -23,7 +23,10 @@ def profile():
 @main.route('/restaurants')
 @login_required
 def restaurants():
-    restaurants = Restaurant.query.all()
+    if(current_user.type != 'restaurant'):
+        restaurants = Restaurant.query.all()
+    else:
+        restaurants = Restaurant.query.filter_by(owner=current_user._id)
     return render_template('restaurants.html', restaurants=restaurants)
 
 @main.route('/new_restaurants')
@@ -66,5 +69,15 @@ def restaurants_post():
     new_menu_item = MenuItem(name=menuItemName, description=menuItemDescription, price=menuItemPrice, menu=new_menu.id)
     db.session.add(new_restaurant)
     db.session.commit()
+
+    return redirect(url_for('main.restaurants'))
+
+
+@main.route('/order', methods=['POST'])
+@login_required
+def order_post():
+    if(current_user.type != 'user'):
+        flash('Not Allowed to create new order')
+        return redirect(url_for('main.error'))
 
     return redirect(url_for('main.restaurants'))
