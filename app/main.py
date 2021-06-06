@@ -76,9 +76,9 @@ def restaurants_post():
 
     return redirect(url_for('main.restaurants'))
 
-@main.route('/restaurants/:id')
+@main.route('/restaurants/<id>')
 @login_required
-def get():
+def get(id):
     restaurant = Restaurant.query.filter_by(id=id)
     return restaurant
 
