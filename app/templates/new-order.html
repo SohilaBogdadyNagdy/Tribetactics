@@ -18,7 +18,7 @@
         {% with messages = get_flashed_messages() %}
             {% if messages %}
                 <div class="notification is-danger">
-                    {{ messages[0] }}. Go to <a href="{{ url_for('main.order_post') }}">restaurant page</a>.
+                    {{ messages[0] }}. Go to <a href="{{ url_for('main.orders_post') }}">restaurant page</a>.
                 </div>
             {% endif %}
         {% endwith %}
