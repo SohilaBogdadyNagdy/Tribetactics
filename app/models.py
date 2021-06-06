@@ -1,18 +1,20 @@
 from flask_login import UserMixin
-from sqlalchemy_utils import ChoiceType
+from sqlalchemy_utils import types
 from . import db
+
 
 class User(UserMixin, db.Model):
     TYPES = [
-        (u'ADMIN', u'admin'),
-        (u'USER', u'user'),
-        (u'RESTAURANT', u'restaurant')
+        ('ADMIN', 'admin'),
+        ('USER', 'user'),
+        ('RESTAURANT', 'restaurant')
     ]
     id = db.Column(db.Integer, primary_key=True) # primary keys are required by SQLAlchemy
     email = db.Column(db.String(100), unique=True)
     password = db.Column(db.String(100))
     name = db.Column(db.String(1000))
-    type = db.Column(ChoiceType(TYPES))
+    type = db.Column(db.String())
+
 
 class Restaurant(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -40,7 +42,7 @@ class Order(db.Model):
         (u'DELIVERED', u'Delivered'),
     ]
     id = db.Column(db.Integer, primary_key=True)
-    state = db.Column(ChoiceType(STATES))
+    state = db.Column(types.choice.ChoiceType(STATES))
     user=db.Column(db.Integer, db.ForeignKey('user.id'))
     restaurant = db.Column(db.Integer, db.ForeignKey('restaurant.id'))
     totalAmount = db.Column(db.Integer)
