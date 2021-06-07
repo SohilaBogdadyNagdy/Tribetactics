@@ -1,0 +1,352 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "description": "Flask-Python",
+    "version": "1.0.0",
+    "title": "Food-delivery-app",
+    "contact": {
+      "email": "sohila.bogdady2012@gmail.com"
+    },
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://restaurants-food-delivery-app.herokuapp.com/"
+    }
+  ],
+  "tags": [
+    {
+      "name": "User",
+      "description": "API for auth user"
+    },
+    {
+      "name": "Restaurant",
+      "description": "API for restaurants"
+    },
+    {
+      "name": "Order",
+      "description": "API for orders"
+    } 
+  ],
+  "paths": {
+    "/signup": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Create a new user",
+        "requestBody": {
+          "description": "Signup",
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/userPostBody"
+              }
+            }
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "201": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/components/schemas/id"
+            }
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          }
+        }
+      }
+    },
+    "/login": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Login",
+        "requestBody": {
+          "description": "Login",
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/login"
+              }
+            }
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/components/schemas/id"
+            }
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          }
+        }
+      }
+    },
+    "/logout": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "logout",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          }
+        }
+      }
+    },
+    "/restaurants": {
+      "get": {
+        "tags": [
+          "Restaurant"
+        ],
+        "summary": "list all restaurant",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          }
+        }
+      }, 
+      "post": {
+        "tags": [
+          "Restaurant"
+        ],
+        "summary": "Create a new restaurant",
+        "requestBody": {
+          "description": "new restaurant",
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/restaurantPostBody"
+              }
+            }
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "201": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/components/schemas/id"
+            }
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          }
+        }
+      }  
+    },
+    "/restaurants/<id>": {
+      "get": {
+        "tags": [
+          "Restaurant"
+        ],
+        "summary": "Get one restaurant",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "example": {
+              "name": "Opa",
+              "description": "italian food",
+              "phone": "010937742",
+              "Address": "Alex"
+            }
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          }
+        }
+      }
+    },
+    "/orders": {
+      "get": {
+        "tags": [
+          "Order"
+        ],
+        "summary": "list all orders",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          }
+        }
+      }, 
+      "post": {
+        "tags": [
+          "Order"
+        ],
+        "summary": "Create a new order",
+        "requestBody": {
+          "description": "new order",
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/orderPostBody"
+              }
+            }
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "201": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/components/schemas/id"
+            }
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          }
+        }
+      }  
+    }
+  },
+  "components": {
+    "schemas": {
+      "id": {
+        "properties": {
+          "uuid": {
+            "type": "string"
+          }
+        }
+      },
+      "userPostBody": {
+        "type": "object",
+        "required": ["name", "email", "password", "type"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "format": "string"
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "password": {
+            "type": "string",
+            "format": "string"
+          },
+          "type": {
+            "type": "string",
+            "format": "string",
+          }
+        }
+      },
+      "login": {
+        "type": "object",
+        "required": ["email", "password"],
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "password": {
+            "type": "string",
+            "format": "string"
+          }
+        }
+      },
+      "restaurantPostRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "format": "string"
+          },
+          "description": {
+            "type": "string",
+            "format": "name"
+          },
+          "menu": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "format": "string"
+              },
+              "description": {
+                "type": "string",
+                "format": "name"
+              }
+            }
+          },
+          "menuItems": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "format": "string"
+              },
+              "description": {
+                "type": "string",
+                "format": "name"
+              },
+              "price": {
+                "type": "integer",
+                "format": "number"
+              }
+            }
+          }
+        }
+      },
+      "orderPostRequest": {
+        "type": "object",
+        "properties": {
+          "restaurant": {
+            "type": "string",
+            "format": "string"
+          },
+          "orderItems": {
+            "type": "object",
+            "properties": {
+              "item": {
+                "type": "string",
+                "format": "string"
+              },
+              "quantity": {
+                "type": "integer"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
